@@ -26,7 +26,7 @@ RUN sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
 RUN cd /home && mkdir /home/appdynamics && mkdir /home/appdynamics/java_agent
 RUN wget http://www.sandbreak.com/AppServerAgent.zip -O /home/appdynamics/AppServerAgent.zip
 RUN unzip /home/appdynamics/AppServerAgent.zip -d /home/appdynamics/java_agent/
-RUN cd /usr/local/konakart/bin && touch setenv.sh
+RUN cd /usr/local/konakart/bin && touch /usr/local/konakart/bin/setenv.sh
 RUN echo 'export CATALINA_OPTS="$CATALINA_OPTS -javaagent:/home/appdynamics/java_agent/javaagent.jar -Dappdynamics.controller.hostName=devopslabappsphere -Dappdynamics.controller.port=8090 -Dappdynamics.agent.applicationName=KonaKart -Dappdynamics.agent.tierName=Kona_Server -Dappdynamics.agent.nodeName=Node1"' >> /usr/local/konakart/bin/setenv.sh
 CMD service mysql start && /usr/local/konakart/bin/startkonakart.sh && tail -F /usr/local/konakart/logs/catalina.out
 EXPOSE 8780
