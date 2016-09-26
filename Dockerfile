@@ -9,11 +9,11 @@ RUN echo mysql-server mysql-server/root_password select l3tm31n | debconf-set-se
 RUN echo mysql-server mysql-server/root_password_again select l3tm31n | debconf-set-selections
 RUN apt-get -y install mysql-server libmysql-java
 RUN service mysql start && mysql --user=root --password=l3tm31n -e "CREATE DATABASE konakart; CREATE USER 'konakart'@'127.0.0.1' IDENTIFIED BY 'k0n4k4rt'; GRANT ALL ON konakart.* TO 'konakart'@'127.0.0.1'; CREATE USER 'konakart'@'localhost' IDENTIFIED BY 'k0n4k4rt'; GRANT ALL ON konakart.* TO 'konakart'@'localhost'; CREATE USER 'monitor'@'localhost' IDENTIFIED BY 'appd123'; GRANT ALL PRIVILEGES ON *.* TO 'monitor'@'localhost' WITH GRANT OPTION; CREATE USER 'monitor'@'%' IDENTIFIED BY 'appd123'; GRANT ALL PRIVILEGES ON *.* TO 'monitor'@'%' WITH GRANT OPTION;"
-ADD http://www.konakart.com/kkcounter/click.php?id=5 KonaKart-8.1.0.0-Linux-Install-64
+RUN wget https://github.com/sandbreak80/docker_konakart/releases/download/8.1/KonaKart-8.1.0.0-Linux-Install-64 -O KonaKart-8.1.0.0-Linux-Install-64
 RUN chmod +x KonaKart-8.1.0.0-Linux-Install-64
 RUN ./KonaKart-8.1.0.0-Linux-Install-64 -S -DDatabaseType mysql -DDatabaseUrl jdbc:mysql://localhost:3306/konakart -DDatabaseUsername konakart -DDatabasePassword k0n4k4rt -DJavaJRE /usr/lib/jvm/java-8-openjdk-amd64/jre
 RUN service mysql start && mysql -p konakart --user=konakart --password=k0n4k4rt < /usr/local/konakart/database/MySQL/konakart_demo.sql
-RUN wget http://www.sandbreak.com/konakart.sql -O /usr/local/konakart/database/MySQL/konakart.sql
+RUN wget https://github.com/sandbreak80/docker_konakart/releases/download/8.1/konakart.sql -O /usr/local/konakart/database/MySQL/konakart.sql
 RUN service mysql start && mysql -p konakart --user=konakart --password=k0n4k4rt < /usr/local/konakart/database/MySQL/konakart.sql
 CMD service mysql start && /usr/local/konakart/bin/startkonakart.sh
 RUN sleep 300s
